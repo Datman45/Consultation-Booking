@@ -1,4 +1,6 @@
+import { createBookingRequestBody, Booking } from "../../types/booking";
+
 export interface BookingDao {
-  createBooking(bookingData: any): Promise<any>;
-  getBookingById(bookingId: string): Promise<any>;
+  createBooking(bookingData: createBookingRequestBody): Promise<Booking>;
+  getBookingById(bookingId: string): Promise<Booking>;
 }

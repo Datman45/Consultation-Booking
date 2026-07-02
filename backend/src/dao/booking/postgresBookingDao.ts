@@ -4,11 +4,12 @@ import { pool } from "../../db/coonection";
 export class PostgresBookingDao implements BookingDao {
   async createBooking(bookingData: any): Promise<any> {
     const result = await pool.query(
-      "INSERT INTO bookings (client_id, expert_id, slot_id, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
+      "INSERT INTO bookings (client_id, expert_id, slot_id, status, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [
         bookingData.client_id,
         bookingData.expert_id,
         bookingData.slot_id,
+        bookingData.status,
         bookingData.created_at,
       ],
     );
