@@ -1,0 +1,47 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  background-color: darkcyan;
+}
+
+nav .project-name {
+  width: 50%;
+  padding: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  width: 50%;
+  padding: 1rem;
+  gap: 1rem;
+  justify-content: right;
+}
+
+.nav-link,
+.project-name {
+  color: white !important;
+  text-decoration: none;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.text-centered-content {
+  text-align: center;
+}
+
+footer {
+  background-color: darkcyan;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}

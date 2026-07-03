@@ -40,6 +40,6 @@ router.post(
 );
 
 router.get("/:id", async (req, res) => {
-  const booking = bookingService.getBookingById(req.params.id);
+  const booking = await bookingService.getBookingById(req.params.id);
   res.send(booking);
 });
