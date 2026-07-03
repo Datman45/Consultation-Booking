@@ -3,7 +3,7 @@ export interface Booking {
   expertId: string;
   slotId: string;
   status: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 export interface createBookingRequestBody {

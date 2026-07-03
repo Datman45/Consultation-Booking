@@ -1,34 +1,45 @@
 import { Router } from "express";
 import { Request } from "express";
 import { createBookingRequestBody } from "../../../types";
-import { PostgresBookingDao } from "../../../dao/booking/postgresBookingDao";
+import {
+  BookingDao,
+  ClientDao,
+  postgresSlotDao,
+  SlotDao,
+  PostgresClientDao,
+  PostgresBookingDao,
+} from "../../../dao/";
 import { validateBookingRequestBody } from "../../../middlewares/booking";
+import { BookingService } from "../../../services/booking";
 
 export const router = Router();
-const postgresBookingDao = new PostgresBookingDao();
+const clientDao: ClientDao = new PostgresClientDao();
+const bookingDao: BookingDao = new PostgresBookingDao();
+const slotDao: SlotDao = new postgresSlotDao();
+const bookingService = new BookingService(bookingDao, clientDao, slotDao);
 
 router.post(
   "/",
   validateBookingRequestBody,
   async (req: Request<{}, any, createBookingRequestBody>, res) => {
-    const { clientId, expertId, slotId } = req.body;
-    const booking = await postgresBookingDao.createBooking({
-      client_id: clientId,
-      expert_id: expertId,
-      slot_id: slotId,
-      status: "pending",
-      created_at: new Date(),
-    });
+    try {
+      const { clientId, expertId, slotId } = req.body;
+      const booking = await bookingService.createBooking({
+        clientId: clientId,
+        expertId: expertId,
+        slotId: slotId,
+        status: "pending",
+        createdAt: new Date(),
+      });
 
-    res.send(booking);
+      res.send(booking);
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
   },
 );
 
 router.get("/:id", async (req, res) => {
-  const bookingId = req.params.id;
-  const booking = await postgresBookingDao.getBookingById(bookingId);
-
-  console.log("Booking retrieved:", booking);
-
+  const booking = bookingService.getBookingById(req.params.id);
   res.send(booking);
 });
