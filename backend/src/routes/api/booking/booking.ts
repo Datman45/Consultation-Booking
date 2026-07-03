@@ -4,7 +4,7 @@ import { createBookingRequestBody } from "../../../types";
 import {
   BookingDao,
   ClientDao,
-  postgresSlotDao,
+  PostgresSlotDao,
   SlotDao,
   PostgresClientDao,
   PostgresBookingDao,
@@ -15,7 +15,7 @@ import { BookingService } from "../../../services/booking";
 export const router = Router();
 const clientDao: ClientDao = new PostgresClientDao();
 const bookingDao: BookingDao = new PostgresBookingDao();
-const slotDao: SlotDao = new postgresSlotDao();
+const slotDao: SlotDao = new PostgresSlotDao();
 const bookingService = new BookingService(bookingDao, clientDao, slotDao);
 
 router.post(
