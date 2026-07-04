@@ -25,6 +25,11 @@ export default function Header() {
               </NavLinks>
             )}
             {clientInfo?.id && (
+              <NavLinks className="nav-link" href="/bookings/view">
+                View Bookings
+              </NavLinks>
+            )}
+            {clientInfo?.id && (
               <NavLinks
                 className="nav-link"
                 href="#"

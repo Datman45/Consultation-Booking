@@ -43,7 +43,7 @@ export default function Home() {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="text-centered-content mb-3">
-          Please choose a profile:
+          <h2>Please choose a profile:</h2>
         </div>
         <select
           className="form-select form-select-sm mb-3"
