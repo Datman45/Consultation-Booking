@@ -35,6 +35,24 @@ main {
   padding: 2rem;
 }
 
+.container {
+  width: 75%;
+}
+
+.cards,
+.card {
+  display: flex;
+}
+
+.card {
+  padding: 0.5rem 1rem;
+}
+
+.cards {
+  gap: 1rem;
+  justify-content: center;
+}
+
 form {
   width: 25%;
   margin: auto;
@@ -60,7 +78,8 @@ form {
   color: black;
 }
 
-.text-centered-content {
+.text-centered-content,
+.card-btn {
   text-align: center;
 }
 

@@ -4,7 +4,9 @@ import { Slot } from "../../types";
 
 export class PostgresSlotDao implements SlotDao {
   async getAllSlots(): Promise<Slot[]> {
-    const result = await pool.query("SELECT * FROM slots");
+    const result = await pool.query(
+      "SELECT s.id, s.expert_id, s.date, e.first_name, e.last_name FROM slots s JOIN experts e ON (s.expert_id = e.id)",
+    );
 
     return result.rows;
   }
