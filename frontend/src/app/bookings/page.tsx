@@ -1,13 +1,17 @@
 "use client";
 
+import { ClientContex } from "@/src/contex/ClientContex";
+import { BookingService } from "@/src/services/BookingService";
 import { SlotService } from "@/src/services/SlotService";
-import { ISlot } from "@/src/types/domain/ISlot";
-import { useEffect, useState } from "react";
+import { IBooking, ISlot } from "@/src/types";
+import { useContext, useEffect, useState } from "react";
 
 export default function Bookings() {
   const slotService = new SlotService();
+  const bookingService = new BookingService();
   const [data, setData] = useState<ISlot[]>([]);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const { clientInfo } = useContext(ClientContex);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +27,20 @@ export default function Bookings() {
     };
     fetchData();
   }, []);
+
+  async function handleSubmit(slot: ISlot) {
+    const inputData = {
+      clientId: clientInfo?.id,
+      expertId: slot.expert_id,
+      slotId: slot.id,
+    };
+
+    try {
+      await bookingService.createAsync(inputData);
+    } catch (error) {
+      setErrorMessage([(error as Error).message]);
+    }
+  }
 
   function formatDate(value: Date | undefined): string | undefined {
     if (!value) {
@@ -47,6 +65,7 @@ export default function Bookings() {
         <div className="text-centered-content">
           <h2>Available slots:</h2>
         </div>
+        {errorMessage}
         <div className="cards mt-3">
           {data.map((slot) => (
             <div className="card" key={slot.id}>
@@ -57,7 +76,12 @@ export default function Bookings() {
                 Date: {formatDate(slot.date)}
               </div>
               <div className="card-btn mb-1">
-                <button className="btn btn-primary">Book</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleSubmit(slot)}
+                >
+                  Book
+                </button>
               </div>
             </div>
           ))}
