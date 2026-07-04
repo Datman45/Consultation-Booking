@@ -5,6 +5,7 @@ import {
   expertRouter,
   slotRouter,
 } from "./routes/index";
+import cors from "cors";
 
 console.log("App is starting...");
 
@@ -12,6 +13,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3001",
+  }),
+);
 
 app.use("/api/booking", bookingRouter);
 app.use("/api/client", clientRouter);
