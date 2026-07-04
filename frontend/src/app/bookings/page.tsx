@@ -24,6 +24,23 @@ export default function Bookings() {
     fetchData();
   }, []);
 
+  function formatDate(value: Date | undefined): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    const date = new Date(value);
+
+    const days = String(date.getDate()).padStart(2, "0");
+    const months = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear());
+
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return days + "." + months + "." + year + " | " + hours + ":" + minutes;
+  }
+
   return (
     <>
       <div className="container">
@@ -36,7 +53,9 @@ export default function Bookings() {
               <div className="card-expert mb-1">
                 Expert: {slot.first_name} {slot.last_name}
               </div>
-              <div className="card-date mb-1">Date: {slot.date.toString()}</div>
+              <div className="card-date mb-3">
+                Date: {formatDate(slot.date)}
+              </div>
               <div className="card-btn mb-1">
                 <button className="btn btn-primary">Book</button>
               </div>
