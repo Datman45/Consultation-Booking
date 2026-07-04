@@ -12,6 +12,7 @@ export default function Bookings() {
   const bookingService = new BookingService();
   const [data, setData] = useState<ISlot[]>([]);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
   const { setClientInfo, clientInfo } = useContext(ClientContex);
   const router = useRouter();
 
@@ -34,6 +35,16 @@ export default function Bookings() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (errorMessage.length === 0) return;
+
+    const timer = setTimeout(() => {
+      setErrorMessage([]);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [errorMessage]);
+
   async function handleSubmit(slot: ISlot) {
     if (!slot.id) {
       setErrorMessage(["Slot id is missing"]);
@@ -52,8 +63,8 @@ export default function Bookings() {
     };
 
     try {
+      setLoading(true);
       const response = await bookingService.createAsync(inputData);
-
       if (response.errors) {
         setErrorMessage(response.errors);
         return;
@@ -69,6 +80,8 @@ export default function Bookings() {
       setErrorMessage([]);
     } catch (error) {
       setErrorMessage([(error as Error).message]);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -95,7 +108,15 @@ export default function Bookings() {
         <div className="text-centered-content">
           <h2>Available slots:</h2>
         </div>
-        <div className="text-danger text-centered-content">{errorMessage}</div>
+
+        {loading && <p className="text-centered-content">Loading...</p>}
+
+        {errorMessage.length > 0 && (
+          <div className="text-danger text-centered-content">
+            {errorMessage.join(", ")}
+          </div>
+        )}
+
         <div className="cards mt-3">
           {data.map((slot) => (
             <div className="card" key={slot.id}>
@@ -109,6 +130,7 @@ export default function Bookings() {
                 <button
                   className="btn btn-primary"
                   onClick={() => handleSubmit(slot)}
+                  disabled={loading}
                 >
                   Book
                 </button>
