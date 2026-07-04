@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { ClientContex } from "../contex/ClientContex";
 
 export default function Header() {
-  const { clientInfo } = useContext(ClientContex);
+  const { setClientInfo, clientInfo } = useContext(ClientContex);
 
   return (
     <>
@@ -22,6 +22,17 @@ export default function Header() {
             {clientInfo?.id && (
               <NavLinks className="nav-link" href="/bookings">
                 Booking
+              </NavLinks>
+            )}
+            {clientInfo?.id && (
+              <NavLinks
+                className="nav-link"
+                href="#"
+                onClick={() => {
+                  setClientInfo!(undefined);
+                }}
+              >
+                Log out
               </NavLinks>
             )}
           </div>

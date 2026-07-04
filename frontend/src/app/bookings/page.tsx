@@ -3,7 +3,8 @@
 import { ClientContex } from "@/src/contex/ClientContex";
 import { BookingService } from "@/src/services/BookingService";
 import { SlotService } from "@/src/services/SlotService";
-import { IBooking, ISlot } from "@/src/types";
+import { ISlot } from "@/src/types";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Bookings() {
@@ -11,14 +12,19 @@ export default function Bookings() {
   const bookingService = new BookingService();
   const [data, setData] = useState<ISlot[]>([]);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
-  const { clientInfo } = useContext(ClientContex);
+  const { setClientInfo, clientInfo } = useContext(ClientContex);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!clientInfo?.id) {
+      router.push("/");
+    }
+  }, [clientInfo, router]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await slotService.getAllAsync();
-
-        console.log(response.data);
 
         setData(response?.data ?? []);
       } catch (error) {
@@ -29,6 +35,16 @@ export default function Bookings() {
   }, []);
 
   async function handleSubmit(slot: ISlot) {
+    if (!slot.id) {
+      setErrorMessage(["Slot id is missing"]);
+      return;
+    }
+
+    if (!clientInfo?.id) {
+      setErrorMessage(["Client id is missing"]);
+      return;
+    }
+
     const inputData = {
       clientId: clientInfo?.id,
       expertId: slot.expert_id,
@@ -36,7 +52,21 @@ export default function Bookings() {
     };
 
     try {
-      await bookingService.createAsync(inputData);
+      const response = await bookingService.createAsync(inputData);
+
+      if (response.errors) {
+        setErrorMessage(response.errors);
+        return;
+      }
+
+      if (!response.errors && clientInfo && setClientInfo) {
+        setClientInfo({
+          ...clientInfo,
+          credits: clientInfo.credits - 100,
+        });
+      }
+
+      setErrorMessage([]);
     } catch (error) {
       setErrorMessage([(error as Error).message]);
     }
@@ -65,7 +95,7 @@ export default function Bookings() {
         <div className="text-centered-content">
           <h2>Available slots:</h2>
         </div>
-        {errorMessage}
+        <div className="text-danger text-centered-content">{errorMessage}</div>
         <div className="cards mt-3">
           {data.map((slot) => (
             <div className="card" key={slot.id}>

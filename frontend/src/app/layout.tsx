@@ -28,9 +28,13 @@ export default function RootLayout({
     }
   }, []);
 
-  const updateClientInfo = (value: IClient) => {
+  const updateClientInfo = (value: IClient | undefined) => {
     setClientInfo(value);
-    localStorage.setItem("_client", JSON.stringify(value));
+    if (value == undefined) {
+      localStorage.removeItem("_client");
+    } else {
+      localStorage.setItem("_client", JSON.stringify(value));
+    }
   };
 
   return (
