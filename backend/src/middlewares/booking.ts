@@ -38,6 +38,18 @@ export function validateBookingRequestBody(
 
   next();
 }
+export function validateBookingUUID(
+  req: Request<{ id: string }, any, string>,
+  res: Response,
+  next: NextFunction,
+) {
+  const id = req.params.id;
+  if (!isValidUUID(id)) {
+    return res.status(400).json({ error: "Invalid bookingId format" });
+  }
+
+  next();
+}
 
 function isValidUUID(uuid: string): boolean {
   const uuidRegex =

@@ -40,7 +40,7 @@ export default function Bookings() {
 
     const timer = setTimeout(() => {
       setErrorMessage([]);
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [errorMessage]);

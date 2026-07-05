@@ -44,13 +44,17 @@ main {
   display: flex;
 }
 
+.cards {
+  gap: 1rem;
+  justify-content: center;
+}
+
 .card {
   padding: 0.5rem 1rem;
 }
 
-.cards {
-  gap: 1rem;
-  justify-content: center;
+.card-item {
+  float: right;
 }
 
 form {

@@ -9,7 +9,10 @@ import {
   PostgresClientDao,
   PostgresBookingDao,
 } from "../../../dao/";
-import { validateBookingRequestBody } from "../../../middlewares/booking";
+import {
+  validateBookingRequestBody,
+  validateBookingUUID,
+} from "../../../middlewares/booking";
 import { BookingService } from "../../../services/booking";
 
 export const router = Router();
@@ -39,7 +42,11 @@ router.post(
   },
 );
 
-router.get("/:id", async (req, res) => {
-  const booking = await bookingService.getBookingById(req.params.id);
-  res.send(booking);
+router.get("/:id", validateBookingUUID, async (req, res) => {
+  try {
+    const booking = await bookingService.getBookingById(req.params.id);
+    res.send(booking);
+  } catch (error) {
+    return res.status(404).json({ error: (error as Error).message });
+  }
 });

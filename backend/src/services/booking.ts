@@ -36,6 +36,11 @@ export class BookingService {
 
   async getBookingById(bookingId: string): Promise<Booking> {
     const booking = await this.bookingDao.getBookingById(bookingId);
+
+    if (!booking) {
+      throw new Error(`Booking with ${bookingId} doesn't exist`);
+    }
+
     return booking;
   }
 }
