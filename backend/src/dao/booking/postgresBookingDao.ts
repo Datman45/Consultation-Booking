@@ -1,10 +1,14 @@
+import { PoolClient } from "pg";
 import { BookingDao } from ".";
 import { pool } from "../../db/coonection";
 import { Booking } from "../../types";
 
 export class PostgresBookingDao implements BookingDao {
-  async createBooking(bookingData: Booking): Promise<Booking> {
-    const result = await pool.query(
+  async createBooking(
+    bookingData: Booking,
+    dbClient: PoolClient,
+  ): Promise<Booking> {
+    const result = await dbClient.query(
       "INSERT INTO bookings (client_id, expert_id, slot_id, status, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [
         bookingData.clientId,

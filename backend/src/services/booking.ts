@@ -14,27 +14,45 @@ export class BookingService {
   }
 
   async createBooking(bookingData: Booking): Promise<Booking> {
-    const busySlot = await this.bookingDao.getBookingBySlotId(
-      bookingData.slotId,
-    );
+    const dbClient = await pool.connect();
 
-    if (busySlot) {
-      throw new Error("Slot is already booked");
+    try {
+      await dbClient.query("BEGIN");
+
+      const client = await this.clientDao.getClientById(
+        bookingData.clientId,
+        dbClient,
+      );
+
+      if (Number(client.credits) < 100) {
+        throw new Error("Client does not have enough credits");
+      }
+
+      const booking = await this.bookingDao.createBooking(
+        bookingData,
+        dbClient,
+      );
+
+      await this.clientDao.updateClientCredits(
+        bookingData.clientId,
+        Number(client.credits) - 100,
+        dbClient,
+      );
+
+      await dbClient.query("COMMIT");
+
+      return booking;
+    } catch (error: any) {
+      await dbClient.query("ROLLBACK");
+
+      if (error.code === "23505") {
+        throw new Error("Slot is already booked");
+      }
+
+      throw error;
+    } finally {
+      dbClient.release();
     }
-
-    const client = await this.clientDao.getClientById(bookingData.clientId);
-
-    if (Number(client.credits) < 100) {
-      throw new Error("Client does not have enough credits");
-    }
-
-    const booking = await this.bookingDao.createBooking(bookingData);
-
-    await this.clientDao.updateClientCredits(
-      bookingData.clientId,
-      Number(client.credits) - 100,
-    );
-    return booking;
   }
 
   async getBookingById(bookingId: string): Promise<Booking> {
