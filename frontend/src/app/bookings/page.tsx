@@ -1,6 +1,7 @@
 "use client";
 
 import { ClientContex } from "@/src/contex/ClientContex";
+import { formatDate } from "@/src/helpers/FormatDate";
 import { BookingService } from "@/src/services/BookingService";
 import { SlotService } from "@/src/services/SlotService";
 import { ISlot } from "@/src/types";
@@ -97,23 +98,6 @@ export default function Bookings() {
     } finally {
       setLoading(false);
     }
-  }
-
-  function formatDate(value: Date | undefined): string | undefined {
-    if (!value) {
-      return undefined;
-    }
-
-    const date = new Date(value);
-
-    const days = String(date.getDate()).padStart(2, "0");
-    const months = String(date.getMonth() + 1).padStart(2, "0");
-    const year = String(date.getFullYear());
-
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return days + "." + months + "." + year + " | " + hours + ":" + minutes;
   }
 
   return (

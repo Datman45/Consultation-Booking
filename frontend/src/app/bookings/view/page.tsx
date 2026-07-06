@@ -6,6 +6,7 @@ import { IBooking2 } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { formatDate } from "@/src/helpers/FormatDate";
 
 export default function ViewBooking() {
   const bookingService = new BookingService();
@@ -121,7 +122,12 @@ export default function ViewBooking() {
               <div className="card-item">Client ID: {data.client_id}</div>
               <div className="card-item">Expert ID: {data.expert_id}</div>
               <div className="card-item"> Slot ID: {data.slot_id}</div>
-              <div className="card-item"> Created At: {data.created_at}</div>
+              <div className="card-item">
+                Date:{" "}
+                {data.created_at
+                  ? formatDate(new Date(data.created_at))
+                  : "N/A"}
+              </div>
               <div className="card-item">Status: {data.status}</div>
             </div>
           </div>
