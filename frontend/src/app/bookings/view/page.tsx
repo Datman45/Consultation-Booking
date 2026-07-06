@@ -11,6 +11,7 @@ export default function ViewBooking() {
   const bookingService = new BookingService();
   const [data, setData] = useState<IBooking2>();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
   const { clientInfo } = useContext(ClientContex);
   const router = useRouter();
 
@@ -32,6 +33,16 @@ export default function ViewBooking() {
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
+  useEffect(() => {
+    if (successMessage.length === 0) return;
+
+    const timer = setTimeout(() => {
+      setSuccessMessage([]);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage]);
+
   type FormValue = { id: string };
   const {
     register,
@@ -44,12 +55,17 @@ export default function ViewBooking() {
   const onSubmit: SubmitHandler<FormValue> = async (value: FormValue) => {
     setData(undefined);
     setErrorMessage([]);
+    setSuccessMessage([]);
     try {
       const result = await bookingService.getByIdAsync(value.id);
 
       if (result.errors) {
         setErrorMessage(result.errors);
         return;
+      }
+
+      if (result.statusCode == 200 && result.data) {
+        setSuccessMessage(["Booking found successfully"]);
       }
 
       setData(result.data);
@@ -62,7 +78,14 @@ export default function ViewBooking() {
     <>
       <div className="container text-centered-content">
         <h2>Find Booking by ID</h2>
-        {errorMessage && <div className="text-danger mb-3">{errorMessage}</div>}
+        {successMessage.length > 0 && (
+          <div className="text-success text-centered-content mb-3">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage.length > 0 && (
+          <div className="text-danger mb-3">{errorMessage}</div>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
@@ -95,11 +118,11 @@ export default function ViewBooking() {
         {data && (
           <div className="booking-data">
             <div className="card booking-card mt-3">
-              <div className="card-item">Client ID: {data?.client_id}</div>
-              <div className="card-item">Expert ID: {data?.expert_id}</div>
-              <div className="card-item"> Slot ID: {data?.slot_id}</div>
-              <div className="card-item"> Created At: {data?.created_at}</div>
-              <div className="card-item">Status: {data?.status}</div>
+              <div className="card-item">Client ID: {data.client_id}</div>
+              <div className="card-item">Expert ID: {data.expert_id}</div>
+              <div className="card-item"> Slot ID: {data.slot_id}</div>
+              <div className="card-item"> Created At: {data.created_at}</div>
+              <div className="card-item">Status: {data.status}</div>
             </div>
           </div>
         )}

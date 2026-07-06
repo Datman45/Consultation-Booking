@@ -13,6 +13,7 @@ export default function Bookings() {
   const [data, setData] = useState<ISlot[]>([]);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string[]>([]);
   const { setClientInfo, clientInfo } = useContext(ClientContex);
   const router = useRouter();
 
@@ -40,10 +41,20 @@ export default function Bookings() {
 
     const timer = setTimeout(() => {
       setErrorMessage([]);
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [errorMessage]);
+
+  useEffect(() => {
+    if (successMessage.length === 0) return;
+
+    const timer = setTimeout(() => {
+      setSuccessMessage([]);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage]);
 
   async function handleSubmit(slot: ISlot) {
     if (!slot.id) {
@@ -77,6 +88,9 @@ export default function Bookings() {
         });
       }
 
+      if (response.statusCode == 200 && response.data) {
+        setSuccessMessage(["Your consultation was successfully booked"]);
+      }
       setErrorMessage([]);
     } catch (error) {
       setErrorMessage([(error as Error).message]);
@@ -110,6 +124,12 @@ export default function Bookings() {
         </div>
 
         {loading && <p className="text-centered-content">Loading...</p>}
+
+        {successMessage.length > 0 && (
+          <div className="text-success text-centered-content mb-3">
+            {successMessage}
+          </div>
+        )}
 
         {errorMessage.length > 0 && (
           <div className="text-danger text-centered-content">
