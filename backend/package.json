@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "start /b tsc -w & nodemon dist/app.js",
+    "dev": "start /b tsc -w & nodemon dist/server.js",
     "init-db": "tsc && node dist/db/initDb.js",
     "drop-tables": "tsc && node dist/db/dropTables.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,12 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
+    "@types/supertest": "^7.2.0",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.11",
     "typescript": "^6.0.3"
   }
 }
