@@ -1,4 +1,5 @@
 import { BookingDao, ClientDao, SlotDao } from "../dao";
+import { pool } from "../db/coonection";
 import { Booking } from "../types";
 
 export class BookingService {
@@ -27,11 +28,13 @@ export class BookingService {
       throw new Error("Client does not have enough credits");
     }
 
+    const booking = await this.bookingDao.createBooking(bookingData);
+
     await this.clientDao.updateClientCredits(
       bookingData.clientId,
       Number(client.credits) - 100,
     );
-    return await this.bookingDao.createBooking(bookingData);
+    return booking;
   }
 
   async getBookingById(bookingId: string): Promise<Booking> {
