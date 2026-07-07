@@ -1,13 +1,16 @@
 import { PoolClient } from "pg";
-import { createBookingRequestBody, Booking } from "../../types";
+import { CreateBooking, Booking } from "../../types";
 
 export interface BookingDao {
   createBooking(
-    bookingData: createBookingRequestBody,
+    bookingData: CreateBooking,
     dbClient: PoolClient,
   ): Promise<Booking>;
-  getBookingById(bookingId: string): Promise<Booking>;
-  getBookingBySlotId(slotId: string): Promise<Booking>;
+  getBookingById(bookingId: string): Promise<Booking | undefined>;
+  getBookingBySlotId(
+    slotId: string,
+    dbClient: PoolClient,
+  ): Promise<Booking | undefined>;
 }
 
 export * from "./postgresBookingDao";

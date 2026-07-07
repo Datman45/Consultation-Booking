@@ -22,7 +22,7 @@ beforeAll(async () => {
       BookingTestClientId,
       BookingTestExpertId,
       BookingTestSlotId,
-      "pending",
+      "CONFIRMED",
       new Date(),
     ],
   );
@@ -31,20 +31,20 @@ beforeAll(async () => {
 describe("View bookings", () => {
   it("should view booking by ID", async () => {
     const booking = await request(app).get(
-      `/api/booking/${bookingResponse.rows[0].id}`,
+      `/api/bookings/${bookingResponse.rows[0].id}`,
     );
 
     expect(booking.status).toBe(200);
 
     expect(booking.body.id).toBe(bookingResponse.rows[0].id);
-    expect(booking.body.client_id).toBe(BookingTestClientId);
-    expect(booking.body.expert_id).toBe(BookingTestExpertId);
-    expect(booking.body.slot_id).toBe(BookingTestSlotId);
+    expect(booking.body.clientId).toBe(BookingTestClientId);
+    expect(booking.body.expertId).toBe(BookingTestExpertId);
+    expect(booking.body.slotId).toBe(BookingTestSlotId);
   });
 
   it("should return missing ID", async () => {
     const booking = await request(app).get(
-      `/api/booking/${viewBookingTestMissingId}`,
+      `/api/bookings/${viewBookingTestMissingId}`,
     );
 
     expect(booking.status).toBe(404);

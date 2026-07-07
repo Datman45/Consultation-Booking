@@ -18,7 +18,7 @@ app.use(
   }),
 );
 
-app.use("/api/booking", bookingRouter);
-app.use("/api/client", clientRouter);
-app.use("/api/expert", expertRouter);
-app.use("/api/slot", slotRouter);
+app.use("/api/bookings", bookingRouter);
+app.use("/api/clients", clientRouter);
+app.use("/api/experts", expertRouter);
+app.use("/api/slots", slotRouter);

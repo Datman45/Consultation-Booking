@@ -1,11 +1,9 @@
 import { Router } from "express";
 import { Request } from "express";
-import { createBookingRequestBody } from "../../../types";
+import { CreateBookingRequestBody } from "../../../types";
 import {
   BookingDao,
   ClientDao,
-  PostgresSlotDao,
-  SlotDao,
   PostgresClientDao,
   PostgresBookingDao,
 } from "../../../dao/";
@@ -18,20 +16,19 @@ import { BookingService } from "../../../services/booking";
 export const router = Router();
 const clientDao: ClientDao = new PostgresClientDao();
 const bookingDao: BookingDao = new PostgresBookingDao();
-const slotDao: SlotDao = new PostgresSlotDao();
-const bookingService = new BookingService(bookingDao, clientDao, slotDao);
+const bookingService = new BookingService(bookingDao, clientDao);
 
 router.post(
   "/",
   validateBookingRequestBody,
-  async (req: Request<{}, any, createBookingRequestBody>, res) => {
+  async (req: Request<{}, any, CreateBookingRequestBody>, res) => {
     try {
       const { clientId, expertId, slotId } = req.body;
       const booking = await bookingService.createBooking({
         clientId: clientId,
         expertId: expertId,
         slotId: slotId,
-        status: "pending",
+        status: "CONFIRMED",
         createdAt: new Date(),
       });
 

@@ -3,6 +3,6 @@ import { EntityService } from "./EntityService";
 
 export class ClientService extends EntityService<IClient> {
   constructor() {
-    super("/client");
+    super("/clients");
   }
 }

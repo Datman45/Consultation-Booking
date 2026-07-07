@@ -1,8 +1,8 @@
-import { createBookingRequestBody } from "../../src/types/booking";
+import { CreateBookingRequestBody } from "../../src/types/booking";
 import { Request, Response, NextFunction } from "express";
 
 export function validateBookingRequestBody(
-  req: Request<{}, any, createBookingRequestBody>,
+  req: Request<{}, any, CreateBookingRequestBody>,
   res: Response,
   next: NextFunction,
 ) {

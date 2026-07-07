@@ -1,19 +1,17 @@
-import { BookingDao, ClientDao, SlotDao } from "../dao";
+import { BookingDao, ClientDao } from "../dao";
 import { pool } from "../db/coonection";
-import { Booking } from "../types";
+import { Booking, CreateBooking } from "../types";
 
 export class BookingService {
   private bookingDao: BookingDao;
   private clientDao: ClientDao;
-  private slotDao: SlotDao;
 
-  constructor(bookingDao: BookingDao, clientDao: ClientDao, slotDao: SlotDao) {
+  constructor(bookingDao: BookingDao, clientDao: ClientDao) {
     this.bookingDao = bookingDao;
     this.clientDao = clientDao;
-    this.slotDao = slotDao;
   }
 
-  async createBooking(bookingData: Booking): Promise<Booking> {
+  async createBooking(bookingData: CreateBooking): Promise<Booking> {
     const dbClient = await pool.connect();
 
     try {
@@ -26,6 +24,15 @@ export class BookingService {
 
       if (Number(client.credits) < 100) {
         throw new Error("Client does not have enough credits");
+      }
+
+      const bookedSlot = await this.bookingDao.getBookingBySlotId(
+        bookingData.slotId,
+        dbClient,
+      );
+
+      if (bookedSlot) {
+        throw new Error("Slot is already booked");
       }
 
       const booking = await this.bookingDao.createBooking(

@@ -1,4 +1,4 @@
-export { router as bookingRouter } from "./api/booking/booking";
-export { router as clientRouter } from "./api/client/client";
-export { router as expertRouter } from "./api/expert/expert";
-export { router as slotRouter } from "./api/slot/slot";
+export { router as bookingRouter } from "./api/bookings/booking";
+export { router as clientRouter } from "./api/clients/client";
+export { router as expertRouter } from "./api/experts/expert";
+export { router as slotRouter } from "./api/slots/slot";

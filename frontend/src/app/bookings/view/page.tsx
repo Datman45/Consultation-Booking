@@ -2,7 +2,7 @@
 
 import { ClientContex } from "@/src/contex/ClientContex";
 import { BookingService } from "@/src/services";
-import { IBooking2 } from "@/src/types";
+import { IBookingResponse } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { formatDate } from "@/src/helpers/FormatDate";
 
 export default function ViewBooking() {
   const bookingService = new BookingService();
-  const [data, setData] = useState<IBooking2>();
+  const [data, setData] = useState<IBookingResponse>();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string[]>([]);
   const { clientInfo } = useContext(ClientContex);
@@ -119,14 +119,12 @@ export default function ViewBooking() {
         {data && (
           <div className="booking-data">
             <div className="card booking-card mt-3">
-              <div className="card-item">Client ID: {data.client_id}</div>
-              <div className="card-item">Expert ID: {data.expert_id}</div>
-              <div className="card-item"> Slot ID: {data.slot_id}</div>
+              <div className="card-item">Client ID: {data.clientId}</div>
+              <div className="card-item">Expert ID: {data.expertId}</div>
+              <div className="card-item"> Slot ID: {data.slotId}</div>
               <div className="card-item">
-                Date:{" "}
-                {data.created_at
-                  ? formatDate(new Date(data.created_at))
-                  : "N/A"}
+                Created at:{" "}
+                {data.createdAt ? formatDate(new Date(data.createdAt)) : "N/A"}
               </div>
               <div className="card-item">Status: {data.status}</div>
             </div>

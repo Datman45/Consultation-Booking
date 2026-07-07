@@ -21,17 +21,17 @@ describe("Booking creation", () => {
   };
 
   it("should create a booking successfully", async () => {
-    const response = await request(app).post("/api/booking").send(body);
+    const response = await request(app).post("/api/bookings").send(body);
 
     expect(response.status).toBe(200);
-    expect(response.body.client_id).toBe(BookingTestClientId);
-    expect(response.body.expert_id).toBe(BookingTestExpertId);
-    expect(response.body.slot_id).toBe(BookingTestSlotId);
+    expect(response.body.clientId).toBe(BookingTestClientId);
+    expect(response.body.expertId).toBe(BookingTestExpertId);
+    expect(response.body.slotId).toBe(BookingTestSlotId);
   });
 
   it("should reject booking when slot is already booked", async () => {
-    const firstResponse = await request(app).post("/api/booking").send(body);
-    const secondResponse = await request(app).post("/api/booking").send(body);
+    const firstResponse = await request(app).post("/api/bookings").send(body);
+    const secondResponse = await request(app).post("/api/bookings").send(body);
 
     expect(firstResponse.status).toBe(200);
     expect(secondResponse.status).toBe(400);
@@ -47,7 +47,7 @@ describe("Booking creation", () => {
 
   it("should prevent multiple concurrent booking requests", async () => {
     const requests = Array.from({ length: 4 }, () =>
-      request(app).post("/api/booking").send(body),
+      request(app).post("/api/bookings").send(body),
     );
 
     const response = await Promise.all(requests);

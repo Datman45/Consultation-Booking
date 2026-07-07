@@ -1,8 +1,8 @@
 // Test data used in createBooking.test.ts.
 // The client must have at least 500 credits.
-export const BookingTestClientId = "2e3b395f-6a71-4591-9f6f-3870e346a45b";
-export const BookingTestExpertId = "0e1512bf-26d2-4384-8598-3bf4c4fc81fa";
-export const BookingTestSlotId = "7d1ea84b-2e96-4c56-a118-3787a31445da";
+export const BookingTestClientId = "6c9338c4-694f-4d1b-b92a-429e8f1dd1b3";
+export const BookingTestExpertId = "4fa9c79f-9682-446f-85b9-374398cb7ed0";
+export const BookingTestSlotId = "bc84457a-c228-4809-8efa-985d0b8efd22";
 
 // Test data used in viewBooking.test.ts.
 export const viewBookingTestMissingId = "7a1ea54b-2e76-1c56-a118-3787a31445da";

@@ -6,10 +6,10 @@ export interface IBooking extends IDomain {
   slotId: string;
 }
 
-export interface IBooking2 extends IDomain {
-  client_id?: string;
-  expert_id?: string;
-  slot_id?: string;
+export interface IBookingResponse extends IDomain {
+  clientId?: string;
+  expertId?: string;
+  slotId?: string;
   status?: string;
-  created_at?: string;
+  createdAt?: string;
 }

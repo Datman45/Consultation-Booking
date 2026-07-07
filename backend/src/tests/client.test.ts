@@ -61,7 +61,7 @@ describe("Client credits transactions", () => {
   });
 
   it("should decrease credits after successful booking", async () => {
-    const bookingResponse = await request(app).post("/api/booking").send({
+    const bookingResponse = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
       expertId: BookingTestExpertId,
       slotId: BookingTestSlotId,
@@ -78,7 +78,7 @@ describe("Client credits transactions", () => {
   });
 
   it("should return error not enough credits", async () => {
-    const bookingResponse = await request(app).post("/api/booking").send({
+    const bookingResponse = await request(app).post("/api/bookings").send({
       clientId: secondClient.rows[0].id,
       expertId: BookingTestExpertId,
       slotId: BookingTestSlotId,
@@ -98,7 +98,7 @@ describe("Client credits transactions", () => {
   });
 
   it("duplicate request does not double charge", async () => {
-    const firstResponse = await request(app).post("/api/booking").send({
+    const firstResponse = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
       expertId: BookingTestExpertId,
       slotId: BookingTestSlotId,
@@ -106,7 +106,7 @@ describe("Client credits transactions", () => {
 
     expect(firstResponse.status).toBe(200);
 
-    const secondResponse = await request(app).post("/api/booking").send({
+    const secondResponse = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
       expertId: BookingTestExpertId,
       slotId: BookingTestSlotId,
@@ -124,7 +124,7 @@ describe("Client credits transactions", () => {
 
   it("should prevent overspending balance during concurrent requests", async () => {
     const requests = Array.from({ length: 4 }, () =>
-      request(app).post("/api/booking").send({
+      request(app).post("/api/bookings").send({
         clientId: thirdClient.rows[0].id,
         expertId: BookingTestExpertId,
         slotId: BookingTestSlotId,
