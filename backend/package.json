@@ -7,7 +7,7 @@
     "dev": "start /b tsc -w & nodemon dist/server.js",
     "init-db": "tsc && node dist/db/initDb.js",
     "drop-tables": "tsc && node dist/db/dropTables.js",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "keywords": [],
   "author": "",

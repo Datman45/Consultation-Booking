@@ -12,6 +12,10 @@ import {
 let bookingResponse: any;
 
 beforeAll(async () => {
+  await pool.query("DELETE FROM bookings WHERE slot_id = $1", [
+    BookingTestSlotId,
+  ]);
+
   bookingResponse = await pool.query(
     "INSERT INTO bookings(client_id, expert_id, slot_id, status, created_at) VALUES ($1,$2,$3,$4,$5) RETURNING *",
     [
