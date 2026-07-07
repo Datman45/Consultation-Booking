@@ -61,7 +61,11 @@ npm run dev
 
 ## How to run tests
 - Before running the tests, update the values in `backend/src/tests/testData.ts` to match the IDs in your database.
-- Run the test suite from the backend root folder:
+- Go to the backend root folder
+``` bash
+cd backend
+```
+- Run the test suite:
 ``` bash
 npm run test
 ```
