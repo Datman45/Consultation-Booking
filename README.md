@@ -1,19 +1,40 @@
 # Consultation-Booking
+
 TypeScript/React/Next.js/Express.js/PostgreSQL full-stack application for booking and viewing consultations.
 
 ## Installation
+
 - Clone or download the repository
 - Open the project in Visual Studio Code
 
+## How to run with Docker
+
+- Go to the project root folder.
+- Start the application:
+
+```bash
+docker compose up -d --build
+```
+
+```text
+Frontend: http://localhost:3001
+Backend: http://localhost:3000
+```
+
 ## How to set up database
+
 - Go to the backend root folder
-``` bash
+
+```bash
 cd backend
 ```
+
 - Download dependencies
-``` bash
+
+```bash
 npm install
 ```
+
 - Create a `.env` file in the backend root folder:
 
 ```env
@@ -31,44 +52,55 @@ CLIENT_URL=http://localhost:3001
 - Install and open pgAdmin
 - Create a PostgreSQL database named `consultation_booking_db`
 - Run database initialization script from backend root folder:
-``` bash
+
+```bash
 npm run init-db
 ```
 
 ## How to run backend
+
 - Build backend
-``` bash
+
+```bash
 npx tsc
 ```
+
 - Run backend
-``` bash
+
+```bash
 npm run dev
 ```
 
 ## How to run frontend
+
 - Go to the frontend root folder
-``` bash
+
+```bash
 cd frontend
 ```
+
 - Download dependencies
-``` bash
+
+```bash
 npm install
 ```
+
 - Run frontend
-``` bash
+
+```bash
 npm run dev
 ```
 
 ## How to run tests
-- Before running the tests, update the values in `backend/src/tests/testData.ts` to match the IDs in your database.
+
 - Go to the backend root folder
-``` bash
+
+```bash
 cd backend
 ```
+
 - Run the test suite:
-``` bash
+
+```bash
 npm run test
 ```
-
-
-

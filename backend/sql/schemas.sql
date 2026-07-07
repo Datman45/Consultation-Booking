@@ -16,20 +16,25 @@ CREATE TABLE IF NOT EXISTS experts (
     last_name varchar(255) NOT NULL
 );
 
-INSERT INTO experts (first_name, last_name) VALUES ('john', 'Black');
+INSERT INTO experts (first_name, last_name) VALUES ('John', 'Black');
 INSERT INTO experts (first_name, last_name) VALUES ('Steven', 'Smith');
 
 CREATE TABLE IF NOT EXISTS slots (
     id UUID primary key DEFAULT gen_random_uuid(),
-    expert_id UUID NOT NULL,
+    expert_id UUID NOT NULL REFERENCES experts(id),
     date TIMESTAMP NOT NULL
 );
 
+INSERT INTO slots (expert_id, date) SELECT id, '2026-07-10 12:00:00' FROM experts WHERE first_name = 'John' AND last_name = 'Black';
+INSERT INTO slots (expert_id, date) SELECT id, '2026-07-10 12:30:00' FROM experts WHERE first_name = 'Steven' AND last_name = 'Smith';
+INSERT INTO slots (expert_id, date) SELECT id, '2026-07-10 13:00:00' FROM experts WHERE first_name = 'John' AND last_name = 'Black';
+INSERT INTO slots (expert_id, date) SELECT id, '2026-07-10 13:30:00' FROM experts WHERE first_name = 'Steven' AND last_name = 'Smith';
+
 CREATE TABLE IF NOT EXISTS bookings (
     id UUID primary key DEFAULT gen_random_uuid(),
-    client_id UUID NOT NULL,
-    expert_id UUID NOT NULL,
-    slot_id UUID NOT NULL UNIQUE,
+    client_id UUID NOT NULL REFERENCES clients(id),
+    expert_id UUID NOT NULL REFERENCES experts(id),
+    slot_id UUID NOT NULL UNIQUE REFERENCES slots(id),
     status VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL
 );

@@ -2,26 +2,35 @@ import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import { app } from "../app";
 import { pool } from "../db/coonection";
-import {
-  BookingTestClientId,
-  BookingTestExpertId,
-  BookingTestSlotId,
-  viewBookingTestMissingId,
-} from "./testData";
+import { thirdClientCredits, viewBookingTestMissingId } from "./testData";
 
+let client: any;
+let expert: any;
+let slot: any;
 let bookingResponse: any;
 
 beforeAll(async () => {
-  await pool.query("DELETE FROM bookings WHERE slot_id = $1", [
-    BookingTestSlotId,
-  ]);
+  client = await pool.query(
+    "INSERT INTO clients (credits) VALUES ($1) RETURNING *",
+    [thirdClientCredits],
+  );
+
+  expert = await pool.query(
+    "INSERT INTO experts (first_name, last_name) VALUES ($1, $2) RETURNING *",
+    ["Harry", "Kane"],
+  );
+
+  slot = await pool.query(
+    "INSERT INTO slots (expert_id, date) VALUES ($1, $2) RETURNING *",
+    [expert.rows[0].id, "2026-08-10 15:00:00"],
+  );
 
   bookingResponse = await pool.query(
     "INSERT INTO bookings(client_id, expert_id, slot_id, status, created_at) VALUES ($1,$2,$3,$4,$5) RETURNING *",
     [
-      BookingTestClientId,
-      BookingTestExpertId,
-      BookingTestSlotId,
+      client.rows[0].id,
+      expert.rows[0].id,
+      slot.rows[0].id,
       "CONFIRMED",
       new Date(),
     ],
@@ -37,9 +46,9 @@ describe("View bookings", () => {
     expect(booking.status).toBe(200);
 
     expect(booking.body.id).toBe(bookingResponse.rows[0].id);
-    expect(booking.body.clientId).toBe(BookingTestClientId);
-    expect(booking.body.expertId).toBe(BookingTestExpertId);
-    expect(booking.body.slotId).toBe(BookingTestSlotId);
+    expect(booking.body.clientId).toBe(client.rows[0].id);
+    expect(booking.body.expertId).toBe(expert.rows[0].id);
+    expect(booking.body.slotId).toBe(slot.rows[0].id);
   });
 
   it("should return missing ID", async () => {
@@ -56,8 +65,14 @@ describe("View bookings", () => {
 
 afterAll(async () => {
   await pool.query("DELETE FROM bookings WHERE slot_id = $1", [
-    BookingTestSlotId,
+    slot.rows[0].id,
   ]);
+
+  await pool.query("DELETE FROM slots WHERE id = $1", [slot.rows[0].id]);
+
+  await pool.query("DELETE FROM experts WHERE id = $1", [expert.rows[0].id]);
+
+  await pool.query("DELETE FROM clients WHERE id = $1", [client.rows[0].id]);
 
   await pool.end();
 });
