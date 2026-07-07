@@ -1,6 +1,6 @@
 import { BookingDao, ClientDao } from "../dao";
 import { pool } from "../db/coonection";
-import { Booking, CreateBooking } from "../types";
+import { Booking, CreateBookingRequestBody } from "../types";
 
 export class BookingService {
   private bookingDao: BookingDao;
@@ -11,7 +11,7 @@ export class BookingService {
     this.clientDao = clientDao;
   }
 
-  async createBooking(bookingData: CreateBooking): Promise<Booking> {
+  async createBooking(bookingData: CreateBookingRequestBody): Promise<Booking> {
     const dbClient = await pool.connect();
 
     try {

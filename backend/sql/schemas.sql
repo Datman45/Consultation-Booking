@@ -35,6 +35,6 @@ CREATE TABLE IF NOT EXISTS bookings (
     client_id UUID NOT NULL REFERENCES clients(id),
     expert_id UUID NOT NULL REFERENCES experts(id),
     slot_id UUID NOT NULL UNIQUE REFERENCES slots(id),
-    status VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    status VARCHAR(255) NOT NULL DEFAULT 'CONFIRMED',
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

@@ -28,8 +28,6 @@ router.post(
         clientId: clientId,
         expertId: expertId,
         slotId: slotId,
-        status: "CONFIRMED",
-        createdAt: new Date(),
       });
 
       res.send(booking);

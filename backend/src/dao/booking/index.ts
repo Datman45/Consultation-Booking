@@ -1,9 +1,9 @@
 import { PoolClient } from "pg";
-import { CreateBooking, Booking } from "../../types";
+import { Booking, CreateBookingRequestBody } from "../../types";
 
 export interface BookingDao {
   createBooking(
-    bookingData: CreateBooking,
+    bookingData: CreateBookingRequestBody,
     dbClient: PoolClient,
   ): Promise<Booking>;
   getBookingById(bookingId: string): Promise<Booking | undefined>;

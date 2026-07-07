@@ -1,22 +1,16 @@
 import { PoolClient } from "pg";
 import { BookingDao } from ".";
 import { pool } from "../../db/coonection";
-import { Booking, CreateBooking } from "../../types";
+import { Booking, CreateBookingRequestBody } from "../../types";
 
 export class PostgresBookingDao implements BookingDao {
   async createBooking(
-    bookingData: CreateBooking,
+    bookingData: CreateBookingRequestBody,
     dbClient: PoolClient,
   ): Promise<Booking> {
     const result = await dbClient.query(
-      "INSERT INTO bookings (client_id, expert_id, slot_id, status, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [
-        bookingData.clientId,
-        bookingData.expertId,
-        bookingData.slotId,
-        bookingData.status,
-        bookingData.createdAt,
-      ],
+      "INSERT INTO bookings (client_id, expert_id, slot_id) VALUES ($1, $2, $3) RETURNING *",
+      [bookingData.clientId, bookingData.expertId, bookingData.slotId],
     );
     return mapToBooking(result.rows[0]);
   }
