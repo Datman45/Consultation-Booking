@@ -29,7 +29,7 @@ The database schema and seed data are loaded automatically when running with Doc
 
 ## How to run tests
 
-Before running tests with a manual/local database, complete the steps in **How to set up database**.
+Before running tests with a local database, complete the steps in **How to set up database**.
 
 If the application was started with Docker, the database is initialized automatically.
 
