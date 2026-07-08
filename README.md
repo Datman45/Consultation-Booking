@@ -2,6 +2,12 @@
 
 TypeScript/React/Next.js/Express.js/PostgreSQL full-stack application for booking and viewing consultations.
 
+## Project structure
+
+- Database schema and seed data are located in `backend/sql/schemas.sql`.
+- Automated integration tests are located in `backend/src/tests`.
+- Docker Compose configuration is located in `docker-compose.yml`.
+
 ## Installation
 
 - Clone or download the repository
@@ -26,8 +32,6 @@ Password: postgres
 ```
 
 The database schema and seed data are loaded automatically when running with Docker.
-
-The database schema and seed data are defined in `backend/sql/schemas.sql`.
 
 ## How to run tests
 
