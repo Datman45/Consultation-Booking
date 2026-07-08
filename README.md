@@ -27,6 +27,8 @@ Password: postgres
 
 The database schema and seed data are loaded automatically when running with Docker.
 
+The database schema and seed data are defined in `backend/sql/schemas.sql`.
+
 ## How to run tests
 
 Before running tests with a local database, complete the steps in **How to set up database**.
@@ -97,7 +99,7 @@ CLIENT_URL=http://localhost:3001
 
 - Install and open pgAdmin
 - Create a PostgreSQL database named `consultation_booking_db`
-- Run database initialization script from backend root folder:
+- Run database initialization script from backend root folder. This command runs `backend/sql/schemas.sql`:
 
 ```bash
 npm run init-db
