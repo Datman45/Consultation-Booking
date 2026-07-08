@@ -19,7 +19,7 @@ docker compose up -d --build
 ```text
 Frontend: http://localhost:3001
 Backend: http://localhost:3000
-Database: localhost:5432
+Database: localhost:5433
 Database name: consultation_booking_db
 Username: postgres
 Password: postgres
@@ -37,6 +37,26 @@ If the application was started with Docker, the database is initialized automati
 
 ```bash
 cd backend
+```
+
+- Download dependencies
+
+```bash
+npm install
+```
+
+- Create a `.env` file:
+
+```env
+PORT=3000
+
+DB_HOST=localhost
+DB_PORT=5433
+DB_NAME=consultation_booking_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+CLIENT_URL=http://localhost:3001
 ```
 
 - Run the test suite:
