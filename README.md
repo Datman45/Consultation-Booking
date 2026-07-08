@@ -45,7 +45,7 @@ cd backend
 npm install
 ```
 
-- Create a `.env` file:
+- Create a `.env` file in the backend root folder:
 
 ```env
 PORT=3000
@@ -135,6 +135,12 @@ cd frontend
 
 ```bash
 npm install
+```
+
+- Create a `.env` file in the frontend root folder:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
 
 - Run frontend
