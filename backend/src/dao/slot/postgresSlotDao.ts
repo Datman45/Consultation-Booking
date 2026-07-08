@@ -11,12 +11,4 @@ export class PostgresSlotDao implements SlotDao {
 
     return result.rows;
   }
-
-  async getSlotById(id: string, dbClient: PoolClient): Promise<Slot> {
-    const result = await dbClient.query("SELECT * FROM slots WHERE id = $1", [
-      id,
-    ]);
-
-    return result.rows[0];
-  }
 }

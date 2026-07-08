@@ -1,7 +1,7 @@
 import { ClientDao } from ".";
 import { Client } from "../../types";
 import { pool } from "../../db/coonection";
-import { PoolClient, Query } from "pg";
+import { PoolClient } from "pg";
 
 export class PostgresClientDao implements ClientDao {
   async getAllClient(): Promise<Client[]> {
@@ -10,14 +10,26 @@ export class PostgresClientDao implements ClientDao {
     return result.rows;
   }
 
-  async getClientById(id: string, dbClient: PoolClient): Promise<Client> {
+  async getClientById(id: string): Promise<Client | undefined> {
+    const result = await pool.query("SELECT * FROM clients WHERE id = $1", [
+      id,
+    ]);
+
+    return result.rows[0];
+  }
+
+  async getClientByIdForUpdate(
+    id: string,
+    dbClient: PoolClient,
+  ): Promise<Client> {
     const result = await dbClient.query(
-      "SELECT * FROM clients where id = $1 FOR UPDATE",
+      "SELECT * FROM clients WHERE id = $1 FOR UPDATE",
       [id],
     );
 
     return result.rows[0];
   }
+
   async updateClientCredits(
     id: string,
     credits: number,

@@ -6,5 +6,5 @@ const postgresExpertDao = new PostgresExpertDao();
 
 router.get("/", async (req, res) => {
   const result = await postgresExpertDao.getAllExperts();
-  res.send(result);
+  return res.json(result);
 });

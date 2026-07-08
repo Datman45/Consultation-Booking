@@ -17,7 +17,7 @@ export class BookingService {
     try {
       await dbClient.query("BEGIN");
 
-      const client = await this.clientDao.getClientById(
+      const client = await this.clientDao.getClientByIdForUpdate(
         bookingData.clientId,
         dbClient,
       );

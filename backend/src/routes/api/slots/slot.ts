@@ -6,5 +6,5 @@ const postgresExpertDao = new PostgresSlotDao();
 
 router.get("/", async (req, res) => {
   const result = await postgresExpertDao.getAllSlots();
-  res.send(result);
+  return res.json(result);
 });

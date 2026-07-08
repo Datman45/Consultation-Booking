@@ -2,6 +2,7 @@
 
 import { ClientContex } from "@/src/contex/ClientContex";
 import { formatDate } from "@/src/helpers/FormatDate";
+import { ClientService } from "@/src/services";
 import { BookingService } from "@/src/services/BookingService";
 import { SlotService } from "@/src/services/SlotService";
 import { ISlot } from "@/src/types";
@@ -11,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 export default function Bookings() {
   const slotService = new SlotService();
   const bookingService = new BookingService();
+  const clientService = new ClientService();
   const [data, setData] = useState<ISlot[]>([]);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -84,14 +86,13 @@ export default function Bookings() {
         return;
       }
 
-      if (!response.errors && clientInfo && setClientInfo) {
-        setClientInfo({
-          ...clientInfo,
-          credits: clientInfo.credits - 100,
-        });
-      }
-
       if (response.statusCode === 201 && response.data) {
+        const clientResponse = await clientService.getByIdAsync(clientInfo.id);
+
+        if (clientResponse.data && setClientInfo) {
+          setClientInfo(clientResponse.data);
+        }
+
         setSuccessMessage(["Your consultation was successfully booked"]);
       }
     } catch (error) {

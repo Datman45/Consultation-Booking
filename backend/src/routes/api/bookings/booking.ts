@@ -7,11 +7,9 @@ import {
   PostgresClientDao,
   PostgresBookingDao,
 } from "../../../dao/";
-import {
-  validateBookingRequestBody,
-  validateBookingUUID,
-} from "../../../middlewares/booking";
+import { validateBookingRequestBody } from "../../../middlewares/booking";
 import { BookingService } from "../../../services/booking";
+import { validateUUID } from "../../../middlewares/uuid";
 
 export const router = Router();
 const clientDao: ClientDao = new PostgresClientDao();
@@ -30,7 +28,7 @@ router.post(
         slotId: slotId,
       });
 
-      res.status(201).send(booking);
+      return res.status(201).json(booking);
     } catch (error) {
       const message = (error as Error).message;
 
@@ -42,15 +40,15 @@ router.post(
         return res.status(403).json({ error: message });
       }
 
-      res.status(400).json({ error: (error as Error).message });
+      return res.status(400).json({ error: message });
     }
   },
 );
 
-router.get("/:id", validateBookingUUID, async (req, res) => {
+router.get("/:id", validateUUID, async (req, res) => {
   try {
     const booking = await bookingService.getBookingById(req.params.id);
-    res.send(booking);
+    return res.json(booking);
   } catch (error) {
     return res.status(404).json({ error: (error as Error).message });
   }
