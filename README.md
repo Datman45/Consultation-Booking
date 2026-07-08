@@ -79,6 +79,12 @@ CLIENT_URL=http://localhost:3001
 npm run init-db
 ```
 
+- To drop all database tables manually, run:
+
+```bash
+npm run drop-tables
+```
+
 ### How to run backend
 
 - Build backend
