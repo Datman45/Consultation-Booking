@@ -9,7 +9,7 @@ TypeScript/React/Next.js/Express.js/PostgreSQL full-stack application for bookin
 
 ## How to run with Docker
 
-- Go to the project root folder.
+- Go to the project root folder
 - Start the application:
 
 ```bash
@@ -25,9 +25,13 @@ Username: postgres
 Password: postgres
 ```
 
-- The database schema and seed data are loaded automatically when running with Docker
+The database schema and seed data are loaded automatically when running with Docker.
 
 ## How to run tests
+
+Before running tests with a manual/local database, complete the steps in **How to set up database**.
+
+If the application was started with Docker, the database is initialized automatically.
 
 - Go to the backend root folder
 
