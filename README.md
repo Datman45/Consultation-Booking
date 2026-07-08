@@ -19,9 +19,31 @@ docker compose up -d --build
 ```text
 Frontend: http://localhost:3001
 Backend: http://localhost:3000
+Database: localhost:5432
+Database name: consultation_booking_db
+Username: postgres
+Password: postgres
 ```
 
-## How to set up database
+- The database schema and seed data are loaded automatically when running with Docker
+
+## How to run tests
+
+- Go to the backend root folder
+
+```bash
+cd backend
+```
+
+- Run the test suite:
+
+```bash
+npm run test
+```
+
+## How to run manually
+
+### How to set up database
 
 - Go to the backend root folder
 
@@ -57,7 +79,7 @@ CLIENT_URL=http://localhost:3001
 npm run init-db
 ```
 
-## How to run backend
+### How to run backend
 
 - Build backend
 
@@ -71,7 +93,7 @@ npx tsc
 npm run dev
 ```
 
-## How to run frontend
+### How to run frontend
 
 - Go to the frontend root folder
 
@@ -89,18 +111,4 @@ npm install
 
 ```bash
 npm run dev
-```
-
-## How to run tests
-
-- Go to the backend root folder
-
-```bash
-cd backend
-```
-
-- Run the test suite:
-
-```bash
-npm run test
 ```

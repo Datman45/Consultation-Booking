@@ -38,26 +38,27 @@ beforeAll(async () => {
 });
 
 describe("View bookings", () => {
-  it("should view booking by ID", async () => {
-    const booking = await request(app).get(
+  it("5. should return booking by ID", async () => {
+    const response = await request(app).get(
       `/api/bookings/${bookingResponse.rows[0].id}`,
     );
 
-    expect(booking.status).toBe(200);
+    expect(response.status).toBe(200);
 
-    expect(booking.body.id).toBe(bookingResponse.rows[0].id);
-    expect(booking.body.clientId).toBe(client.rows[0].id);
-    expect(booking.body.expertId).toBe(expert.rows[0].id);
-    expect(booking.body.slotId).toBe(slot.rows[0].id);
+    expect(response.body.id).toBe(bookingResponse.rows[0].id);
+    expect(response.body.clientId).toBe(client.rows[0].id);
+    expect(response.body.expertId).toBe(expert.rows[0].id);
+    expect(response.body.slotId).toBe(slot.rows[0].id);
   });
 
-  it("should return missing ID", async () => {
-    const booking = await request(app).get(
+  it("6. should return 404 for missing booking ID", async () => {
+    const response = await request(app).get(
       `/api/bookings/${viewBookingTestMissingId}`,
     );
 
-    expect(booking.status).toBe(404);
-    expect(booking.body.error).toBe(
+    expect(response.status).toBe(404);
+
+    expect(response.body.error).toBe(
       `Booking with ${viewBookingTestMissingId} doesn't exist`,
     );
   });

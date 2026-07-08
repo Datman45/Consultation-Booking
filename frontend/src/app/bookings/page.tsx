@@ -58,6 +58,8 @@ export default function Bookings() {
   }, [successMessage]);
 
   async function handleSubmit(slot: ISlot) {
+    setErrorMessage([]);
+    setSuccessMessage([]);
     if (!slot.id) {
       setErrorMessage(["Slot id is missing"]);
       return;
@@ -92,7 +94,6 @@ export default function Bookings() {
       if (response.statusCode === 201 && response.data) {
         setSuccessMessage(["Your consultation was successfully booked"]);
       }
-      setErrorMessage([]);
     } catch (error) {
       setErrorMessage([(error as Error).message]);
     } finally {

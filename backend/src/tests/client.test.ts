@@ -77,34 +77,32 @@ describe("Client credits transactions", () => {
     ]);
   });
 
-  it("should decrease credits after successful booking", async () => {
-    const bookingResponse = await request(app).post("/api/bookings").send({
+  it("7. should charge credits after successful booking", async () => {
+    const response = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
       expertId: expert.rows[0].id,
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(bookingResponse.status).toBe(201);
+    expect(response.status).toBe(201);
 
     const result = await pool.query(
-      "SELECT credits FROM clients where id = $1",
+      "SELECT credits FROM clients WHERE id = $1",
       [firstClient.rows[0].id],
     );
 
     expect(result.rows[0].credits).toBe(firstClientCredits - 100);
   });
 
-  it("should return error not enough credits", async () => {
-    const bookingResponse = await request(app).post("/api/bookings").send({
+  it("8. should return 403 error for not enough credits", async () => {
+    const response = await request(app).post("/api/bookings").send({
       clientId: secondClient.rows[0].id,
       expertId: expert.rows[0].id,
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(bookingResponse.status).toBe(403);
-    expect(bookingResponse.body.error).toBe(
-      "Client does not have enough credits",
-    );
+    expect(response.status).toBe(403);
+    expect(response.body.error).toBe("Client does not have enough credits");
 
     const result = await pool.query(
       "SELECT credits FROM clients WHERE id = $1",
@@ -114,7 +112,7 @@ describe("Client credits transactions", () => {
     expect(result.rows[0].credits).toBe(secondClientCredits);
   });
 
-  it("duplicate request does not double charge", async () => {
+  it("9. should not double charge duplicate requests", async () => {
     const firstResponse = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
       expertId: expert.rows[0].id,
@@ -131,15 +129,22 @@ describe("Client credits transactions", () => {
 
     expect(secondResponse.status).toBe(409);
 
+    const bookings = await pool.query(
+      "SELECT * FROM bookings WHERE slot_id = $1",
+      [firstSlot.rows[0].id],
+    );
+
+    expect(bookings.rowCount).toBe(1);
+
     const result = await pool.query(
-      "SELECT credits FROM clients where id = $1",
+      "SELECT credits FROM clients WHERE id = $1",
       [firstClient.rows[0].id],
     );
 
     expect(result.rows[0].credits).toBe(firstClientCredits - 100);
   });
 
-  it("should prevent overspending balance during concurrent requests", async () => {
+  it("10. should prevent overspending balance during concurrent requests", async () => {
     const responses = await Promise.all([
       request(app).post("/api/bookings").send({
         clientId: thirdClient.rows[0].id,
@@ -188,15 +193,15 @@ afterAll(async () => {
 
   await pool.query("DELETE FROM experts WHERE id = $1", [expert.rows[0].id]);
 
-  await pool.query("DELETE FROM clients where id = $1", [
+  await pool.query("DELETE FROM clients WHERE id = $1", [
     firstClient.rows[0].id,
   ]);
 
-  await pool.query("DELETE FROM clients where id = $1", [
+  await pool.query("DELETE FROM clients WHERE id = $1", [
     secondClient.rows[0].id,
   ]);
 
-  await pool.query("DELETE FROM clients where id = $1", [
+  await pool.query("DELETE FROM clients WHERE id = $1", [
     thirdClient.rows[0].id,
   ]);
 
