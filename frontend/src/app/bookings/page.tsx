@@ -89,7 +89,7 @@ export default function Bookings() {
         });
       }
 
-      if (response.statusCode == 200 && response.data) {
+      if (response.statusCode === 201 && response.data) {
         setSuccessMessage(["Your consultation was successfully booked"]);
       }
       setErrorMessage([]);

@@ -84,7 +84,7 @@ describe("Client credits transactions", () => {
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(bookingResponse.status).toBe(200);
+    expect(bookingResponse.status).toBe(201);
 
     const result = await pool.query(
       "SELECT credits FROM clients where id = $1",
@@ -101,7 +101,7 @@ describe("Client credits transactions", () => {
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(bookingResponse.status).toBe(400);
+    expect(bookingResponse.status).toBe(403);
     expect(bookingResponse.body.error).toBe(
       "Client does not have enough credits",
     );
@@ -121,7 +121,7 @@ describe("Client credits transactions", () => {
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(firstResponse.status).toBe(200);
+    expect(firstResponse.status).toBe(201);
 
     const secondResponse = await request(app).post("/api/bookings").send({
       clientId: firstClient.rows[0].id,
@@ -129,7 +129,7 @@ describe("Client credits transactions", () => {
       slotId: firstSlot.rows[0].id,
     });
 
-    expect(secondResponse.status).toBe(400);
+    expect(secondResponse.status).toBe(409);
 
     const result = await pool.query(
       "SELECT credits FROM clients where id = $1",
@@ -154,7 +154,7 @@ describe("Client credits transactions", () => {
     ]);
 
     const successfulResponses = responses.filter(
-      (response) => response.status === 200,
+      (response) => response.status === 201,
     );
 
     expect(successfulResponses.length).toBe(1);

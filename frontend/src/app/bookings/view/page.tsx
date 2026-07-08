@@ -65,7 +65,7 @@ export default function ViewBooking() {
         return;
       }
 
-      if (result.statusCode == 200 && result.data) {
+      if (result.statusCode === 200 && result.data) {
         setSuccessMessage(["Booking found successfully"]);
       }
 

@@ -53,7 +53,7 @@ describe("Booking creation", () => {
   it("should create a booking successfully", async () => {
     const response = await request(app).post("/api/bookings").send(body());
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body.clientId).toBe(client.rows[0].id);
     expect(response.body.expertId).toBe(expert.rows[0].id);
     expect(response.body.slotId).toBe(slot.rows[0].id);
@@ -65,8 +65,8 @@ describe("Booking creation", () => {
       .post("/api/bookings")
       .send(body());
 
-    expect(firstResponse.status).toBe(200);
-    expect(secondResponse.status).toBe(400);
+    expect(firstResponse.status).toBe(201);
+    expect(secondResponse.status).toBe(409);
     expect(secondResponse.body.error).toBe("Slot is already booked");
 
     const result = await pool.query(
@@ -91,7 +91,7 @@ describe("Booking creation", () => {
       }),
     ]);
 
-    const successfulResponses = responses.filter((e) => e.status === 200);
+    const successfulResponses = responses.filter((e) => e.status === 201);
     expect(successfulResponses.length).toBe(1);
 
     const result = await pool.query(
